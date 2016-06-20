@@ -1,6 +1,6 @@
-	class PostsController < ApplicationController
-	  before_action :find_post, only: [:show, :edit, :update, :destroy, :upvote, :downvote]
-	  before_action :authenticate_user!, except: [:index, :show]
+class PostsController < ApplicationController
+	before_action :find_post, only: [:show, :edit, :update, :destroy, :upvote, :downvote]
+	before_action :authenticate_user!, except: [:index, :show]
 
 	def index
 		@posts = Post.all.order("created_at DESC")
@@ -8,6 +8,8 @@
 
 	def show
 		@comments = Comment.where(post_id: @post)
+
+
 	end
 
 	def new
@@ -46,7 +48,7 @@
 	end
 
 	def downvote
-		@post.downvote_by current_user
+		@post.downvote_from current_user
 		redirect_to :back
 	end
 
@@ -59,5 +61,4 @@
 	def post_params
 		params.require(:post).permit(:title, :link, :description, :image)
 	end
-
 end
